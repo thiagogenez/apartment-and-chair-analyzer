@@ -125,7 +125,7 @@ class FloorPlan:
             logging.debug(" ".join("X" if cell else "." for cell in row))
         logging.debug("%" * self.rows * 2)
 
-    def is_visitable(self, cell: tuple[int, int]) -> bool:
+    def _is_visitable(self, cell: tuple[int, int]) -> bool:
         """Determines if a given cell in the floor plan is visitable.
 
         Args:
@@ -234,7 +234,7 @@ class FloorPlan:
 
                 # If the next cell is visitable (within bounds, not visited,
                 # and not a wall), mark it as visited and add to the queue.
-                if self.is_visitable((nx, ny)):
+                if self._is_visitable((nx, ny)):
                     self.visited[nx][ny] = True
                     queue.append((nx, ny))
 
