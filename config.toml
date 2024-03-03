@@ -1,0 +1,23 @@
+# config.toml
+
+# Black configurations
+[tool.black]
+line-length = 100
+target-version = ['py310']
+
+# Docformatter configurations
+[tool.docformatter]
+wrap-summaries = 100
+wrap-descriptions = 100
+wrap-arguments = 100
+wrap-returns = 100
+
+# Pylint configurations
+[tool.pylint."MESSAGES CONTROL"]
+disable = [
+    "logging-fstring-interpolation",
+    "redefined-outer-name"
+]
+
+[tool.pylint.FORMAT]
+max-line-length = 100
