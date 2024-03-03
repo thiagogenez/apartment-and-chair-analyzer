@@ -1,4 +1,5 @@
-"""This module defines the FloorPlan class for representing and working with floor plans."""
+"""This module defines the FloorPlan class for representing and working with
+floor plans."""
 
 import re
 import logging
@@ -14,9 +15,8 @@ class FloorPlan:
     """Represents a floor plan and provides methods for working with it."""
 
     def __init__(self, file_path: str, chair_types: set[str], wall_separators: set[str]):
-        """
-        Initialize the FloorPlan object by reading and padding the floor plan from a file, and
-        initializing the visited matrix.
+        """Initialize the FloorPlan object by reading and padding the floor
+        plan from a file, and initializing the visited matrix.
 
         Args:
             file_path (str): Path to the file containing the floor plan.
@@ -59,8 +59,8 @@ class FloorPlan:
         logging.debug(f"Chair types: {self.chair_types}")
 
     def _validate_inputs(self, chair_types: set[str], wall_separators: set[str]):
-        """
-        Validates the input sets for chair types and wall separators to ensure they are not empty.
+        """Validates the input sets for chair types and wall separators to
+        ensure they are not empty.
 
         This method checks if the provided sets for chair types and wall separators
         contain any elements. If any of these sets are found to be empty, it logs an
@@ -89,9 +89,9 @@ class FloorPlan:
             raise ValueError("Wall separators cannot be empty.")
 
     def _read_and_pad_floor_plan(self, file_path: str) -> list[list[str]]:
-        """
-        Reads a floor plan from a file, removing trailing whitespace from each line, and pads each
-        line with spaces to ensure all have the same length.
+        """Reads a floor plan from a file, removing trailing whitespace from
+        each line, and pads each line with spaces to ensure all have the same
+        length.
 
         Uses 'utf-8-sig' encoding to correctly handle files with a UTF-8 BOM.
 
@@ -126,8 +126,7 @@ class FloorPlan:
         logging.debug("%" * self.rows * 2)
 
     def is_visitable(self, cell: tuple[int, int]) -> bool:
-        """
-        Determines if a given cell in the floor plan is visitable.
+        """Determines if a given cell in the floor plan is visitable.
 
         Args:
             cell (tuple[int, int]): The (x, y) coordinates of the cell to check.
@@ -145,8 +144,8 @@ class FloorPlan:
 
     @staticmethod
     def get_room_name(row_str: str, y: int) -> str | None:
-        """
-        Extracts a room name from a row string based on the horizontal position (y) using regex.
+        """Extracts a room name from a row string based on the horizontal
+        position (y) using regex.
 
         Searches for the nearest pair of parentheses surrounding the y position and
         extracts the substring enclosed within. If the position is not within a valid
@@ -181,10 +180,10 @@ class FloorPlan:
         self,
         start_cell: tuple[int, int],
     ) -> tuple[Optional[str], dict[str, int]]:
-        """
-        Explores the floor plan from a starting cell using Breadth-First Search (BFS) to count
-        chairs by type and identify the room name, considering specified wall_separators to identify
-        walls and chair types.
+        """Explores the floor plan from a starting cell using Breadth-First
+        Search (BFS) to count chairs by type and identify the room name,
+        considering specified wall_separators to identify walls and chair
+        types.
 
         Args:
             start_cell (tuple[int, int]): The starting cell coordinates (x, y) as a tuple.
@@ -244,10 +243,11 @@ class FloorPlan:
         return area_name, chairs
 
     def parse_floor_plan(self):
-        """
-        Parses the entire floor plan to find all rooms and count chair types within each room.
+        """Parses the entire floor plan to find all rooms and count chair types
+        within each room.
 
-        Stores the result in self.room_mappings as {"room_name": {"chair_type": count}}.
+        Stores the result in self.room_mappings as {"room_name":
+        {"chair_type": count}}.
         """
 
         logging.debug("Starting to parse the floor plan.")
@@ -263,8 +263,8 @@ class FloorPlan:
         logging.debug("Finished parsing the floor plan.")
 
     def _explore_cell(self, x: int, y: int) -> None:
-        """
-        Explore a single cell in the floor plan, updating room mappings if a room is discovered.
+        """Explore a single cell in the floor plan, updating room mappings if a
+        room is discovered.
 
         Args:
             x (int): The x-coordinate of the cell.
@@ -296,10 +296,10 @@ class FloorPlan:
         self._print_floor_plan()
 
     def _format_chair_counts(self, chair_counts: dict) -> str:
-        """
-        Formats the chair counts into a sorted, comma-separated string, ensuring that all chair
-        types defined in the class, as well as those found in specific rooms, are included in the
-        output. Chair types not found in the room will have a count of 0.
+        """Formats the chair counts into a sorted, comma-separated string,
+        ensuring that all chair types defined in the class, as well as those
+        found in specific rooms, are included in the output. Chair types not
+        found in the room will have a count of 0.
 
         Args:
             chair_counts (dict): A dictionary mapping chair types to their counts in a room.
@@ -322,8 +322,9 @@ class FloorPlan:
         return ", ".join(formatted_chair_counts)
 
     def get_room_names_sorted(self) -> str:
-        """Returns a string representation of the room names stored in room_mappings and their chair
-        counts, in alphabetical order, including a total count of chairs at the beginning."""
+        """Returns a string representation of the room names stored in
+        room_mappings and their chair counts, in alphabetical order, including
+        a total count of chairs at the beginning."""
         # Initialize total chairs dictionary with zeros for all chair types.
         total_chairs = {chair: 0 for chair in self.chair_types}
 

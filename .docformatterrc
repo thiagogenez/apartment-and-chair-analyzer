@@ -1,0 +1,6 @@
+# This is a comment in the .docformatterrc file
+[docformatter]
+wrap-summaries = 100
+wrap-descriptions = 100
+pre-summary-newline = True
+docstring-length = 100

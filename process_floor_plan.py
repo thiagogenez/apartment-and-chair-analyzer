@@ -19,8 +19,7 @@ def setup_logging(log_level):
 
 
 def main(file_path: str, separators: set, chair_chars: set, log_level: str) -> None:
-    """
-    Main function to process the floor plan file.
+    """Main function to process the floor plan file.
 
     Args:
         file_path: Path to the floor plan file.
