@@ -26,7 +26,7 @@ For the Analyzer to function correctly and efficiently using the BFS algorithm, 
 
 - **Wall Representation**: The walls within the floor plans are denoted by a specific set of characters: ``{"+", "-", "|", "/", "\\"}``. These characters are crucial for the algorithm to identify the boundaries of each room and navigate the matrix accurately.
 
-- **Room Labeling**: Room labels in floor plans are strictly defined to be enclosed in parentheses `(a-Z)`, with `a-Z` denoting the alphanumeric room name. This precise convention is critical for the algorithm to identify and classify rooms accurately within the apartment, ensuring exact chair counts for each area. Labels are meticulously placed within the room's boundaries, avoiding any extension beyond or overlap with walls, which is essential for the algorithm's correct room recognition and subsequent chair count accuracy.
+- **Room Labeling**: Room labels in floor plans are strictly defined to be enclosed in parentheses `(a-Z)`, with `a-Z` denoting the alphanumeric room name. This precise convention is critical for the algorithm to identify and classify rooms accurately within the apartment, ensuring exact chair counts for each area. Labels are meticulously placed within the room's boundaries, avoiding any extension beyond or overlap with walls, which is essential for the algorithm's correct room recognition and subsequent chair count accuracy. It's important to note that each room must have only one label, ensuring clarity and accuracy in room identification.
 
 ## Installation
 
@@ -53,7 +53,8 @@ python process_floor_plan.py /path/to/floor_plan.txt
 
 Given a floor plan indicating the desired positions of different chair types (W for wooden chair, P for plastic chair, S for sofa chair, C for china chair), the tool outputs the count of each chair type both for the entire apartment and per room, sorted alphabetically by room names:
 
-File `example_floor_plan.txt`
+File `example/example1.txt`
+
 ```text
 +-----------+------------------------------------+
 |           |                                    |
@@ -109,7 +110,7 @@ File `example_floor_plan.txt`
 
 Call the `process_floor_plan`
 ```bash
-python process_floor_plan.py example_floor_plan.txt
+python process_floor_plan.py example/example1.txt
 ```
 
 Output
