@@ -22,9 +22,11 @@ def main(file_path: str, separators: set, chair_chars: set, log_level: str) -> N
     """
     Main function to process the floor plan file.
 
-    Args:     file_path: Path to the floor plan file.     separators: Set of characters
-    used as separators.     chair_chars: Set of characters representing chairs.
-    log_level: Logging level as a string.
+    Args:
+        file_path: Path to the floor plan file.
+        separators: Set of characters used as separators.
+        chair_chars: Set of characters representing chairs.
+        log_level: Logging level as a string.
     """
 
     # Configure logging based on the user's choice
