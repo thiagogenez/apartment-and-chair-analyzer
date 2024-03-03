@@ -27,12 +27,12 @@ jobs:
 
       - name: Run docformatter
         run: |
-          docformatter --config .docformatterrc --in-place --recursive $(git ls-files '*.py')
+          docformatter --config config.toml --in-place --recursive $(git ls-files '*.py')
 
       - name: Run black
         run: |
-          black --config .blackrc --line-length 100 $(git ls-files '*.py')
+          black --config config.toml --line-length 100 $(git ls-files '*.py')
 
       - name: Analyzing the code with pylint
         run: |
-          pylint --rcfile=.pylintrc $(git ls-files '*.py')
+          pylint --rcfile=config.toml $(git ls-files '*.py')
