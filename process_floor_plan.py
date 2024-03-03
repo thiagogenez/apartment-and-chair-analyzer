@@ -1,13 +1,14 @@
+"""Module for processing floor plan files."""
+
 import argparse
-from floor_plan import FloorPlan, FloorPlanError
 import logging
 import sys
 
+from floor_plan import FloorPlan, FloorPlanError
+
 
 def setup_logging(log_level):
-    """
-    Configure the logging level and format.
-    """
+    """Configure the logging level and format."""
     numeric_level = getattr(logging, log_level.upper(), None)
     if not isinstance(numeric_level, int):
         raise ValueError(f"Invalid log level: {log_level}")
@@ -21,11 +22,9 @@ def main(file_path: str, separators: set, chair_chars: set, log_level: str) -> N
     """
     Main function to process the floor plan file.
 
-    Args:
-        file_path: Path to the floor plan file.
-        separators: Set of characters used as separators.
-        chair_chars: Set of characters representing chairs.
-        log_level: Logging level as a string.
+    Args:     file_path: Path to the floor plan file.     separators: Set of characters
+    used as separators.     chair_chars: Set of characters representing chairs.
+    log_level: Logging level as a string.
     """
 
     # Configure logging based on the user's choice

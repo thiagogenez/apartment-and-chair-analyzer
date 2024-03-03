@@ -1,7 +1,9 @@
+"""This module defines the FloorPlan class for representing and working with floor
+plans."""
+
 import re
 import sys
 import logging
-import argparse
 from collections import deque
 from typing import Optional
 
@@ -9,22 +11,21 @@ from typing import Optional
 class FloorPlanError(Exception):
     """Custom exception class for FloorPlan related errors."""
 
-    pass
-
 
 class FloorPlan:
+    """Represents a floor plan and provides methods for working with it."""
 
     def __init__(
         self, file_path: str, chair_types: set[str], wall_separators: set[str]
     ):
         """
-        Initialize the FloorPlan object by reading and padding the floor plan from a file,
-        and initializing the visited matrix.
+        Initialize the FloorPlan object by reading and padding the floor plan from a
+        file, and initializing the visited matrix.
 
-        Args:
-            file_path (str): Path to the file containing the floor plan.
-            chair_types (set[str]): A set of characters that represent chair types.
-            wall_separators (set[str]): A set of characters that represent non-visitable cells.
+        Args:     file_path (str): Path to the file containing the floor plan.
+        chair_types (set[str]): A set of characters that represent chair types.
+        wall_separators (set[str]): A set of characters that represent non-visitable
+        cells.
         """
 
         # Sanity check for inputs
@@ -67,19 +68,21 @@ class FloorPlan:
 
     def _validate_inputs(self, chair_types: set[str], wall_separators: set[str]):
         """
-        Validates the input sets for chair types and wall separators to ensure they are not empty.
+        Validates the input sets for chair types and wall separators to ensure they are
+        not empty.
 
-        This method checks if the provided sets for chair types and wall separators contain any elements.
-        If any of these sets are found to be empty, it logs an error message indicating which input set
-        is empty and raises a ValueError to prevent further execution with invalid input parameters.
+        This method checks if the provided sets for chair types and wall separators
+        contain any elements. If any of these sets are found to be empty, it logs an
+        error message indicating which input set is empty and raises a ValueError to
+        prevent further execution with invalid input parameters.
 
-        Args:
-            chair_types (set[str]): A set of characters representing different types of chairs.
-            wall_separators (set[str]): A set of characters used to represent walls or barriers
-                                        that cannot be crossed.
+        Args:     chair_types (set[str]): A set of characters representing different
+        types of chairs.     wall_separators (set[str]): A set of characters used to
+        represent walls or barriers                                 that cannot be
+        crossed.
 
-        Raises:
-            ValueError: If either 'chair_types' or 'wall_separators' is empty, indicating invalid input.
+        Raises:     ValueError: If either 'chair_types' or 'wall_separators' is empty,
+        indicating invalid input.
         """
         # Validate that the chair_types set is not empty
         if not chair_types:
@@ -96,22 +99,22 @@ class FloorPlan:
             raise ValueError("Wall separators cannot be empty.")
 
     def _read_and_pad_floor_plan(self, file_path: str) -> list[list[str]]:
-        """Reads a floor plan from a file, removing trailing whitespace from each line,
-        and pads each line with spaces to ensure all have the same length.
+        """
+        Reads a floor plan from a file, removing trailing whitespace from each line, and
+        pads each line with spaces to ensure all have the same length.
 
         Uses 'utf-8-sig' encoding to correctly handle files with a UTF-8 BOM.
 
-        Args:
-            file_path (str): The path to the file containing the floor plan.
+        Args:     file_path (str): The path to the file containing the floor plan.
 
-        Returns:
-            A list of lists, where each inner list represents a row in the floor plan
-            with equal length, padded with spaces to ensure all have the same length.
+        Returns:     A list of lists, where each inner list represents a row in the
+        floor plan     with equal length, padded with spaces to ensure all have the same
+        length.
         """
         try:
-            with open(file_path, encoding="utf-8-sig") as file:
+            with open(file_path, encoding="utf-8-sig") as f:
                 # Create a list of lists from the file, stripping trailing whitespace
-                floor_plan = [list(line.rstrip()) for line in file]
+                floor_plan = [list(line.rstrip()) for line in f]
 
                 # Determine the maximum length of rows for padding
                 max_length = max(len(row) for row in floor_plan)
@@ -137,11 +140,9 @@ class FloorPlan:
         """
         Determines if a given cell in the floor plan is visitable.
 
-        Args:
-            cell (tuple[int, int]): The (x, y) coordinates of the cell to check.
+        Args:     cell (tuple[int, int]): The (x, y) coordinates of the cell to check.
 
-        Returns:
-            bool: True if the cell is visitable, False otherwise.
+        Returns:     bool: True if the cell is visitable, False otherwise.
         """
         x, y = cell
         return (
@@ -154,18 +155,17 @@ class FloorPlan:
     @staticmethod
     def get_room_name(row_str: str, y: int) -> str | None:
         """
-        Extracts a room name from a row string based on the horizontal position (y) using regex.
+        Extracts a room name from a row string based on the horizontal position (y)
+        using regex.
 
-        Searches for the nearest pair of parentheses surrounding the y position and extracts
-        the substring enclosed within. If the position is not within a valid room name boundary
-        or if parentheses are not properly matched, returns None.
+        Searches for the nearest pair of parentheses surrounding the y position and
+        extracts the substring enclosed within. If the position is not within a valid
+        room name boundary or if parentheses are not properly matched, returns None.
 
-        Args:
-            row_str (str): The string representation of the floor plan's row.
-            y (int): The horizontal position (column index) within the row.
+        Args:     row_str (str): The string representation of the floor plan's row. y
+        (int): The horizontal position (column index) within the row.
 
-        Returns:
-            str or None: The extracted room name if found, otherwise None.
+        Returns:     str or None: The extracted room name if found, otherwise None.
         """
 
         # Compile a regex pattern to find all substrings enclosed in parentheses
@@ -189,17 +189,17 @@ class FloorPlan:
         self,
         start_cell: tuple[int, int],
     ) -> tuple[Optional[str], dict[str, int]]:
-        """Explores the floor plan from a starting cell using Breadth-First Search (BFS) to count chairs
-        by type and identify the room name, considering specified wall_separators to identify walls and chair types.
+        """
+        Explores the floor plan from a starting cell using Breadth-First Search (BFS) to
+        count chairs by type and identify the room name, considering specified
+        wall_separators to identify walls and chair types.
 
-
-        Args:
-            start_cell (tuple[int, int]): The starting cell coordinates (x, y) as a tuple.
-        Returns:
-            A tuple containing the room name (str or None) and a dictionary of chairs found,
-            mapping chair types (str) to their counts (int). Each chair type is initialized with a count of 0.
-        Raises:
-            InvalidCellContentError: If a cell's content is neither a recognized chair type nor a wall separator.
+        Args:     start_cell (tuple[int, int]): The starting cell coordinates (x, y) as
+        a tuple. Returns:     A tuple containing the room name (str or None) and a
+        dictionary of chairs found,     mapping chair types (str) to their counts (int).
+        Each chair type is initialized with a count of 0. Raises:
+        InvalidCellContentError: If a cell's content is neither a recognized chair type
+        nor a wall separator.
         """
 
         # Return immediately if the floor plan is empty, indicating there's nothing to explore.
@@ -223,7 +223,8 @@ class FloorPlan:
             if cell_value in self.chair_types:
                 chairs[cell_value] += 1
 
-            # If we haven't identified the area name yet, and the cell indicates a room name start, extract the name.
+            # If we haven't identified the area name yet,
+            # and the cell indicates a room name start, extract the name.
             elif not area_name and cell_value == "(":
                 # Convert the current row to a string and attempt to extract the room name
                 area_name = self.get_room_name("".join(self.floor_plan[x]), y)
@@ -235,17 +236,21 @@ class FloorPlan:
                     y + dy,
                 )  # Calculate coordinates of the next cell to visit
 
-                # If the next cell is visitable (within bounds, not visited, and not a wall), mark it as visited and add to the queue.
+                # If the next cell is visitable (within bounds, not visited,
+                # and not a wall), mark it as visited and add to the queue.
                 if self.is_visitable((nx, ny)):
                     self.visited[nx][ny] = True
                     queue.append((nx, ny))
 
-        # Return the discovered room name (if any) and the list of chairs found during the exploration.
+        # Return the discovered room name (if any) and the list of chairs
+        # found during the exploration.
         return area_name, chairs
 
     def parse_floor_plan(self):
         """
-        Parses the entire floor plan to find all rooms and count chair types within each room.
+        Parses the entire floor plan to find all rooms and count chair types within each
+        room.
+
         Stores the result in self.room_mappings as {"room_name": {"chair_type": count}}.
         """
 
@@ -254,56 +259,62 @@ class FloorPlan:
         # Reinitialize the visited matrix to ensure a fresh start for parsing.
         self.visited = [[False] * self.cols for _ in range(self.rows)]
 
+        # Iterate over each cell in the floor plan
         for x in range(self.rows):
             for y in range(self.cols):
-
-                # Skip over cells that have been visited or are marked as wall separators.
-                if (
-                    not self.visited[x][y]
-                    and self.floor_plan[x][y] not in self.wall_separators
-                ):
-                    logging.debug(f"Exploring from cell ({x}, {y}).")
-
-                    # Perform BFS from each unvisited cell that is not a wall to discover rooms
-                    area_name, chairs = self._bfs((x, y))
-
-                    if area_name:
-                        # If a room name is found, update the room mappings
-                        if area_name in self.room_mappings:
-                            logging.debug(
-                                f"Updating room: {area_name} with chairs: {chairs}"
-                            )
-
-                            # Merge chair counts if the room was already discovered (unlikely but nothing has been said about repeated room names)
-                            for chair, count in chairs.items():
-                                self.room_mappings[area_name][chair] = (
-                                    self.room_mappings[area_name].get(chair, 0) + count
-                                )
-                        else:
-                            logging.debug(
-                                f"Discovered new room: {area_name} with chairs: {chairs}"
-                            )
-                            self.room_mappings[area_name] = chairs
-                    else:
-                        logging.debug(
-                            f"Encountered an unnamed area starting at cell ({x}, {y}); skipping."
-                        )
-            logging.debug(f"Last explored cell ({x}, {y}).")
-            self._print_floor_plan()
+                self._explore_cell(x, y)
 
         logging.debug("Finished parsing the floor plan.")
 
+    def _explore_cell(self, x: int, y: int) -> None:
+        """
+        Explore a single cell in the floor plan, updating room mappings if a room is
+        discovered.
+
+        Args:     x (int): The x-coordinate of the cell.     y (int): The y-coordinate
+        of the cell.
+        """
+        # Skip over cells that have been visited or are marked as wall separators.
+        if not self.visited[x][y] and self.floor_plan[x][y] not in self.wall_separators:
+            logging.debug(f"Exploring from cell ({x}, {y}).")
+
+            # Perform BFS from each unvisited cell that is not a wall to discover rooms
+            area_name, chairs = self._bfs((x, y))
+
+            if area_name:
+                if area_name in self.room_mappings:
+                    logging.debug(f"Updating room: {area_name} with chairs: {chairs}")
+
+                    # Merge chair counts if the room was already discovered
+                    for chair, count in chairs.items():
+                        self.room_mappings[area_name][chair] = (
+                            self.room_mappings[area_name].get(chair, 0) + count
+                        )
+                else:
+                    logging.debug(
+                        f"Discovered new room: {area_name} with chairs: {chairs}"
+                    )
+                    self.room_mappings[area_name] = chairs
+            else:
+                logging.debug(
+                    f"Encountered an unnamed area starting at cell ({x}, {y}); skipping."
+                )
+
+        logging.debug(f"Last explored cell ({x}, {y}).")
+        self._print_floor_plan()
+
     def _format_chair_counts(self, chair_counts: dict) -> str:
         """
-        Formats the chair counts into a sorted, comma-separated string, ensuring that all chair types
-        defined in the class, as well as those found in specific rooms, are included in the output.
-        Chair types not found in the room will have a count of 0.
+        Formats the chair counts into a sorted, comma-separated string, ensuring that
+        all chair types defined in the class, as well as those found in specific rooms,
+        are included in the output. Chair types not found in the room will have a count
+        of 0.
 
-        Args:
-            chair_counts (dict): A dictionary mapping chair types to their counts in a room.
+        Args:     chair_counts (dict): A dictionary mapping chair types to their counts
+        in a room.
 
-        Returns:
-            str: A formatted string of chair counts, sorted alphabetically by chair type.
+        Returns:     str: A formatted string of chair counts, sorted alphabetically by
+        chair type.
         """
         # Ensure all chair types are included, even if their count is zero, for consistent output.
         all_chair_types = sorted(
@@ -311,8 +322,9 @@ class FloorPlan:
         )
 
         # Construct the output string by iterating over all chair types.
-        # For each chair type, retrieve its count from chair_counts, defaulting to 0 if not found.
-        # This ensures that all known chair types are included in the output, even if not present in the room.
+        # For each chair type, retrieve its count from chair_counts,
+        # defaulting to 0 if not found. This ensures that all known chair
+        # types are included in the output, even if not present in the room.
         formatted_chair_counts = [
             f"{chair}: {chair_counts.get(chair, 0)}" for chair in all_chair_types
         ]
@@ -321,10 +333,9 @@ class FloorPlan:
         return ", ".join(formatted_chair_counts)
 
     def get_room_names_sorted(self) -> str:
-        """
-        Returns a string representation of the room names stored in room_mappings and their chair counts,
-        in alphabetical order, including a total count of chairs at the beginning.
-        """
+        """Returns a string representation of the room names stored in room_mappings and
+        their chair counts, in alphabetical order, including a total count of chairs at
+        the beginning."""
         # Initialize total chairs dictionary with zeros for all chair types.
         total_chairs = {chair: 0 for chair in self.chair_types}
 
@@ -350,11 +361,9 @@ def main(file_path: str, separators: set, chair_chars: set, log_level: str) -> N
     """
     Main function to process the floor plan file.
 
-    Args:
-        file_path: Path to the floor plan file.
-        separators: Set of characters used as separators.
-        chair_chars: Set of characters representing chairs.
-        log_level: Logging level as a string.
+    Args:     file_path: Path to the floor plan file.     separators: Set of characters
+    used as separators.     chair_chars: Set of characters representing chairs.
+    log_level: Logging level as a string.
     """
 
     # Configure logging based on the user's choice
@@ -370,7 +379,8 @@ def main(file_path: str, separators: set, chair_chars: set, log_level: str) -> N
     logging.debug(f"Chair characters: {chair_chars}")
 
     try:
-        # Assume FloorPlan accepts file_path, chair_chars, and separators as initialization parameters
+        # Assume FloorPlan accepts file_path, chair_chars,
+        # and separators as initialization parameters
         floor_plan = FloorPlan(file_path, chair_chars, separators)
         floor_plan.parse_floor_plan()  # Assuming this method parses the floor plan
         print(
@@ -379,39 +389,3 @@ def main(file_path: str, separators: set, chair_chars: set, log_level: str) -> N
     except FloorPlanError as e:
         logging.error(f"Failed to process floor plan: {e}")
         sys.exit(1)
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Process a floor plan file.")
-
-    parser.add_argument(
-        "file_path",
-        type=argparse.FileType("r"),
-        help="The path to the floor plan file.",
-    )
-    parser.add_argument(
-        "--separators",
-        type=lambda s: set(s.split(",")),
-        default={"+", "-", "|", "/", "\\"},
-        help="Set of characters used as separators. Provide as comma-separated. Default: '+,-,|,/,\\'.",
-    )
-
-    parser.add_argument(
-        "--chair_chars",
-        type=lambda s: set(s.split(",")),
-        default={"C", "S", "P", "W"},
-        help="Set of characters representing chairs. Provide as comma-separated. Default: 'C,S,P,W'.",
-    )
-
-    parser.add_argument(
-        "--logging",
-        type=str,
-        default="info",
-        choices=["debug", "info", "warning", "error", "critical"],
-        help="Set the logging level. Default: 'info'.",
-    )
-
-    args = parser.parse_args()
-
-    with args.file_path as file:
-        main(file.name, args.separators, args.chair_chars, args.logging)

@@ -1,0 +1,3 @@
+[MESSAGES CONTROL]
+# Disable f-string interpolation warning in logging calls
+disable=logging-fstring-interpolation
