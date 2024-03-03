@@ -1,3 +1,0 @@
-# This is a comment in the .blackrc file
-[tool.black]
-line-length = 100
