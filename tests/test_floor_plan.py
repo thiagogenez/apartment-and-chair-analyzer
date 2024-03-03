@@ -11,7 +11,9 @@ def example_file_path():
     return os.path.join(os.path.dirname(__file__), "../examples")
 
 
-@pytest.mark.parametrize("file_name", ["example1.txt", "example2.txt", "example3.txt"])
+@pytest.mark.parametrize(
+    "file_name", ["example1.txt", "example2.txt", "example3.txt", "example4.txt", "example5.txt"]
+)
 def test_floor_plan_parsing(example_file_path, file_name):
     """Test parsing of floor plans for different example files.
 
@@ -77,6 +79,16 @@ total:
 W: 0, S: 0, P: 3, C: 0
 studio:
 W: 0, S: 0, P: 3, C: 0
+""",
+        "example4.txt": """\
+total:
+W: 0, S: 0, P: 0, C: 0
+""",
+        "example5.txt": """\
+total:
+W: 0, S: 0, P: 1, C: 0
+a:
+W: 0, S: 0, P: 1, C: 0
 """,
     }
 
