@@ -28,6 +28,12 @@ For the Analyzer to function correctly and efficiently using the BFS algorithm, 
 
 - **Room Labeling**: Room labels in floor plans are strictly defined to be enclosed in parentheses `(a-Z)`, with `a-Z` denoting the alphanumeric room name. This precise convention is critical for the algorithm to identify and classify rooms accurately within the apartment, ensuring exact chair counts for each area. Labels are meticulously placed within the room's boundaries, avoiding any extension beyond or overlap with walls, which is essential for the algorithm's correct room recognition and subsequent chair count accuracy. It's important to note that each room must have only one label, ensuring clarity and accuracy in room identification.
 
+## Time and Space Complexity
+
+The `FloorPlan` class encapsulates functionality for representing and analyzing floor plans. Its methods operate with a time complexity primarily determined by the size of the floor plan matrix, denoted as `R` (number of rows) and `C` (number of columns). Key operations such as parsing the floor plan, exploring cells, and counting chair types typically incur a time complexity of `O(R * C)`. Additionally, the space complexity of the class is also `O(R * C)` due to the need to store the floor plan matrix, visited cells, and room mappings. 
+
+The space complexity of the `FloorPlan` class can be expressed in terms of the size of the input file, which directly corresponds to the dimensions of the floor plan matrix. If the input file size is denoted as `S`, then the space complexity can be stated as `O(S)` since the class needs to store the entire floor plan matrix, visited cells, and room mappings in memory. Therefore, as the size of the input file increases, the memory required by the FloorPlan class also increases linearly.
+
 ## Installation
 
 Ensure Python 3.10 is installed on your system. Follow the steps below to set up the tool:
