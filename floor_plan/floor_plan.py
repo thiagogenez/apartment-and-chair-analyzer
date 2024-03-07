@@ -258,7 +258,8 @@ class FloorPlan:
         # Iterate over each cell in the floor plan
         for x in range(self.rows):
             for y in range(self.cols):
-                self._explore_cell(x, y)
+                if self._is_visitable((x, y)):
+                    self._explore_cell(x, y)
 
         logging.debug("Finished parsing the floor plan.")
 
